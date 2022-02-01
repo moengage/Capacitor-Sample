@@ -1,5 +1,7 @@
 import UIKit
 import Capacitor
+import CapacitorMoengageCore
+import MoEngage
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -7,7 +9,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        MoEngage.enableSDKLogs(true)
+        var sdkConfig : MOSDKConfig
+        let yourAppID = "" //App ID: You can be obtain it from App Settings in MoEngage Dashboard.
+        if let config = MoEngage.sharedInstance().getDefaultSDKConfiguration()         {
+            sdkConfig = config
+            sdkConfig.moeAppID = yourAppID
+        }
+        else{
+            sdkConfig = MOSDKConfig.init(appID: yourAppID)
+        }
+        
+        // Set Correct Data Center here
+        sdkConfig.moeDataCenter = DATA_CENTER_01 //DATA_CENTER_01,DATA_CENTER_02,DATA_CENTER_03
+        
+        // Set App Group ID for sharing data between App and extensions(if Any)
+        sdkConfig.appGroupID = "app group id"
+        
+        // Change these if required, by default all the below opt-outs are set to false.
+        sdkConfig.optOutIDFATracking = false
+        sdkConfig.optOutIDFVTracking = false
+        sdkConfig.optOutDataTracking = false
+        sdkConfig.optOutPushNotification = false
+        sdkConfig.optOutInAppCampaign = false
+        
+        MoECapacitorInitializer.sharedInstance.initializeWithSDKConfig(sdkConfig, withSDKState: true, andLaunchOptions: launchOptions);
         return true
     }
 

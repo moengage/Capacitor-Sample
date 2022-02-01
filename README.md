@@ -11,3 +11,6 @@ For more information check out our [website](https://www.moengage.com/) and [doc
 ### Android
 * Add your APP-ID in the Application class
 * Add `google-services.json` file to `Angular/android/app`.
+
+### iOS
+* Call the initialize method of MoECapacitorInitializer instance in applicationdidFinishLaunchingWithOptions() method with MOSDKConfig instance.
