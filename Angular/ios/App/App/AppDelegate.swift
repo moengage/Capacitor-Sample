@@ -9,11 +9,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        if #available(iOS 10.0, *) {
-            UNUserNotificationCenter.current().delegate = self
-        }
-        let sdkConfig = MoEngageSDKConfig(withAppID:"")
-        sdkConfig.moeDataCenter = .data_center_01
+        UNUserNotificationCenter.current().delegate = self
+        let sdkConfig = MoEngageSDKConfig(appId: "YOUR APP ID", dataCenter: .data_center_01)
         sdkConfig.appGroupID = "group.com.alphadevs.MoEngage.NotificationServices"
         sdkConfig.enableLogs = true
         MoECapacitorInitializer.sharedInstance.initializeDefaultInstance(sdkConfig, andLaunchOptions: nil)
@@ -66,13 +63,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
-    @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         MoEngageSDKMessaging.sharedInstance.userNotificationCenter(center, willPresent: notification)
         completionHandler([.alert, .sound])
     }
 
-    @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         MoEngageSDKMessaging.sharedInstance.userNotificationCenter(center, didReceive: response)
         completionHandler()
