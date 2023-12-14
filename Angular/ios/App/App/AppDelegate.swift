@@ -12,7 +12,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().delegate = self
         }
-        let sdkConfig = MoEngageSDKConfig(withAppID:"DAO6UGZ73D9RTK8B5W96TPYN")
+        let sdkConfig = MoEngageSDKConfig(withAppID:"")
         sdkConfig.moeDataCenter = .data_center_01
         sdkConfig.appGroupID = "group.com.alphadevs.MoEngage.NotificationServices"
         sdkConfig.enableLogs = true

@@ -13,7 +13,7 @@ import { MoECapacitorGeofence } from 'capacitor-moengage-geofence';
 })
 export class HomePage {
   
-  appId: string = "DAO6UGZ73D9RTK8B5W96TPYN";
+  appId: string = "";
   tag: string = "AngularSampleApp_HomePage";
 
   constructor(private data: DataService) {
