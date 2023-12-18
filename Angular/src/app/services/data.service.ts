@@ -28,6 +28,9 @@ export class DataService {
       title: "iOS - Register For Push"
     },
     {
+      title: "Logout"
+    },
+    {
       title: "iOS - Start Geofence Monitoring"
     },
     {
@@ -70,10 +73,10 @@ export class DataService {
       title: "Set ISO Date"
     },
     {
-      title: "Opt out data/push/inapp"
+      title: "Enable Data Tracking"
     },
     {
-      title: "Opt in data/push/inapp"
+      title: "Disable Data Tracking"
     },
     {
       title: "Android - Pass FCM Token"
@@ -98,6 +101,48 @@ export class DataService {
     },
     {
       title: "Disable SDK"
+    },
+    {
+      title: "Enable GAID Tracking"
+    },
+    {
+      title: "Disable GAID Tracking"
+    },
+    {
+      title: "Enable Android ID Tracking"
+    },
+    {
+      title: "Disable Android ID Tracking"
+    },
+    {
+      title: "Android - Navigate to Settings"
+    },
+    {
+      title: "Android - Request Push Permission"
+    },
+    {
+      title: "Android - Push Permission Granted"
+    },
+    {
+      title: "Android - Push Permission Denied"
+    },
+    {
+      title: "Enable Device ID Tracking"
+    },
+    {
+      title: "Disable Device ID Tracking"
+    },
+    {
+      title: "Enable Geofence Monitoring"
+    },
+    {
+      title: "Disable Geofence Monitoring"
+    },
+    {
+      title: "Android - Update Permission Request Count"
+    },
+    {
+      title: "Delete Current User"
     }
 
   ];

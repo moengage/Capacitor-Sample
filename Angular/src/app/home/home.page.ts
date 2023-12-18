@@ -12,7 +12,8 @@ import { MoECapacitorGeofence } from 'capacitor-moengage-geofence';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-
+  
+  appId: string = "YOUR APP ID";
   tag: string = "AngularSampleApp_HomePage";
 
   constructor(private data: DataService) {
@@ -48,12 +49,12 @@ export class HomePage {
       console.log(this.tag + " Received callback 'inAppCampaignSelfHandled',  data: " + JSON.stringify(data))
 
       MoECapacitorCore.selfHandledShown(data)
-      MoECapacitorCore.selfHandledPrimaryClicked(data)
       MoECapacitorCore.selfHandledClicked(data)
       MoECapacitorCore.selfHandledDismissed(data)
     });
 
-    MoECapacitorCore.initialize();
+    MoECapacitorCore.initialize({ appId: this.appId });
+    MoECapacitorCore.setupNotificationChannelsAndroid();
   }
 
   refresh(ev) {
@@ -81,7 +82,9 @@ export class HomePage {
         this.trackEvent();
         break;
       case "Set Custom User Attribute":
-        MoECapacitorCore.setUserAttribute({ name: "User Attr1", value: "Value 1" });
+        MoECapacitorCore.setUserAttribute({ name: "User Attr1", value: "Value 1", appId: this.appId });
+        MoECapacitorCore.setUserAttribute({ name: "User Attr2", value: true, appId: this.appId });
+        MoECapacitorCore.setUserAttribute({ name: "User Attr3", value: 12.33, appId: this.appId });
         break;
       case "Set Default User Attributes":
         this.setDefaultUserAttributes();
@@ -92,14 +95,11 @@ export class HomePage {
       case "Logout":
         this.logOut();
         break;
-      case "iOS - Start Geofence Monitoring":
-        MoECapacitorGeofence.startGeofenceMonitoring()
-        break;
       case "Set App Status - INSTALL":
-        MoECapacitorCore.setAppStatus({ appStatus: MoEAppStatus.INSTALL });
+        MoECapacitorCore.setAppStatus({ appStatus: MoEAppStatus.INSTALL, appId: this.appId });
         break;
       case "Set App Status - UPDATE":
-        MoECapacitorCore.setAppStatus({ appStatus: MoEAppStatus.UPDATE });
+        MoECapacitorCore.setAppStatus({ appStatus: MoEAppStatus.UPDATE, appId: this.appId });
         break;
       case "Set Unique ID":
         this.setUniqueId();
@@ -123,27 +123,22 @@ export class HomePage {
         this.setPhoneNumber();
         break;
       case "Set Gender":
-        MoECapacitorCore.setGender({ gender: MoEUserGender.MALE });
+        MoECapacitorCore.setGender({ gender: MoEUserGender.FEMALE, appId: this.appId });
         break;
       case "Set Birthday":
-        MoECapacitorCore.setBirthDate({ birthdate: "1970-01-01T12:00:00Z" });
+        MoECapacitorCore.setBirthDate({ birthdate: "1970-01-01T12:00:00Z", appId: this.appId });
         break;
       case "Set User Location":
-        MoECapacitorCore.setUserAttributeLocation({ name: "location attribute", location: { latitude: 25.23, longitude: 73.23 } });
+        MoECapacitorCore.setUserAttributeLocation({ name: "location attribute", location: { latitude: 25.23, longitude: 73.23 }, appId: this.appId });
         break;
       case "Set ISO Date":
-        MoECapacitorCore.setUserAttributeDate({ name: "LastPurchaseDate", value: "1970-01-01T12:00:00Z" });
+        MoECapacitorCore.setUserAttributeDate({ name: "LastPurchaseDate", value: "1970-01-01T12:00:00Z", appId: this.appId });
         break;
-      case "Opt out data/push/inapp":
-        MoECapacitorCore.optOutDataTracking({ shouldOptOut: true });
-        MoECapacitorCore.optOutPushNotification({ shouldOptOut: true });
-        MoECapacitorCore.optOutInAppNotification({ shouldOptOut: true });
+      case "Enable Data Tracking":
+        MoECapacitorCore.enableDataTracking({ appId: this.appId });
         break;
-      case "Opt in data/push/inapp":
-        MoECapacitorCore.optOutDataTracking({ shouldOptOut: false });
-        MoECapacitorCore.optOutPushNotification({ shouldOptOut: false });
-        MoECapacitorCore.optOutInAppNotification({ shouldOptOut: false });
-        break;
+      case "Disable Data Tracking":
+        MoECapacitorCore.disableDataTracking({ appId: this.appId });
       case "Android - Pass FCM Token":
         this.passFCMToken();
         break;
@@ -151,22 +146,64 @@ export class HomePage {
         this.passFCMPayload();
         break;
       case "Show InApp":
-        MoECapacitorCore.showInApp();
+        MoECapacitorCore.showInApp({ appId: this.appId });
         break;
       case "SetCurrent Context":
         this.setCurrentContext();
         break;
       case "Self handled InApp":
-        MoECapacitorCore.getSelfHandledInApp();
+        MoECapacitorCore.getSelfHandledInApp({ appId: this.appId });
         break;
       case "Reset Current Context":
-        MoECapacitorCore.resetInAppContext();
+        MoECapacitorCore.resetInAppContext({ appId: this.appId });
         break;
       case "Enable SDK":
-        MoECapacitorCore.enableSdk();
+        MoECapacitorCore.enableSdk({ appId: this.appId });
         break;
       case "Disable SDK":
-        MoECapacitorCore.disableSdk();
+        MoECapacitorCore.disableSdk({ appId: this.appId });
+        break;
+      case "Enable GAID Tracking":
+        MoECapacitorCore.enableAdIdTracking({ appId: this.appId });
+        break;
+      case "Disable GAID Tracking":
+        MoECapacitorCore.disableAdIdTracking({ appId: this.appId });
+        break;
+      case "Enable Android ID Tracking":
+        MoECapacitorCore.enableAndroidIdTracking({ appId: this.appId });
+        break;
+      case "Disable Android ID Tracking":
+        MoECapacitorCore.disableAndroidIdTracking({ appId: this.appId });
+        break;
+      case "Android - Navigate to Settings":
+        MoECapacitorCore.navigateToSettingsAndroid();
+        break;
+      case "Android - Request Push Permission":
+        MoECapacitorCore.requestPushPermissionAndroid();
+        break;
+      case "Android - Push Permission Granted":
+        MoECapacitorCore.pushPermissionResponseAndroid({ isGranted: true });
+        break;
+      case "Android - Push Permission Denied":
+        MoECapacitorCore.pushPermissionResponseAndroid({ isGranted: false });
+        break;
+      case "Enable Device ID Tracking":
+        MoECapacitorCore.enableDeviceIdTracking({ appId: this.appId });
+        break;
+      case "Disable Device ID Tracking":
+        MoECapacitorCore.disableDeviceIdTracking({ appId: this.appId });
+        break;
+      case "Enable Geofence Monitoring":
+        MoECapacitorGeofence.startGeofenceMonitoring({appId : this.appId});
+        break;
+      case "Disable Geofence Monitoring":
+        MoECapacitorGeofence.stopGeofenceMonitoring({appId: this.appId});
+        break;
+      case "Android - Update Permission Request Count":
+        this.updatePushOptInAttemptCount()
+        break;
+      case "Delete Current User":
+        this.deleteUser()
         break;
       default:
         console.log(this.tag + " EventHandler(): did not find any matching event!")
@@ -175,17 +212,17 @@ export class HomePage {
   }
 
   setDefaultUserAttributes() {
-    MoECapacitorCore.setUniqueId({ uniqueId: "202102" });
-    MoECapacitorCore.setUserName({ userName: "abc" });
-    MoECapacitorCore.setFirstName({ firstName: "abc" });
-    MoECapacitorCore.setLastName({ lastName: "xyz" });
-    MoECapacitorCore.setEmailId({ emailId: "abcdef@xyz.com" });
-    MoECapacitorCore.setMobileNumber({ mobileNumber: "0987654321" });
-    MoECapacitorCore.setGender({ gender: MoEUserGender.FEMALE });
-    MoECapacitorCore.setBirthDate({ birthdate: "1970-01-01T12:00:00Z" });
-    MoECapacitorCore.setUserLocation({ location: { latitude: 25.23, longitude: 73.23 } });
-    MoECapacitorCore.setUserAttributeLocation({ name: "default location attribute", location: { latitude: 25.23, longitude: 73.23 } });
-    MoECapacitorCore.setUserAttributeDate({ name: "LastPurchaseDate", value: "1970-01-01T12:00:00Z" });
+    MoECapacitorCore.setUniqueId({ uniqueId: "202102", appId: this.appId });
+    MoECapacitorCore.setUserName({ userName: "abc", appId: this.appId });
+    MoECapacitorCore.setFirstName({ firstName: "abc", appId: this.appId });
+    MoECapacitorCore.setLastName({ lastName: "xyz", appId: this.appId });
+    MoECapacitorCore.setEmailId({ emailId: "abcdef@xyz.com", appId: this.appId });
+    MoECapacitorCore.setMobileNumber({ mobileNumber: "0987654321", appId: this.appId });
+    MoECapacitorCore.setGender({ gender: MoEUserGender.FEMALE, appId: this.appId });
+    MoECapacitorCore.setBirthDate({ birthdate: "1970-01-01T12:00:00Z", appId: this.appId });
+    MoECapacitorCore.setUserLocation({ location: { latitude: 25.23, longitude: 73.23 }, appId: this.appId });
+    MoECapacitorCore.setUserAttributeLocation({ name: "default location attribute", location: { latitude: 25.23, longitude: 73.23 }, appId: this.appId });
+    MoECapacitorCore.setUserAttributeDate({ name: "LastPurchaseDate", value: "1970-01-01T12:00:00Z", appId: this.appId });
   }
 
   trackInteractiveEvent() {
@@ -207,7 +244,7 @@ export class HomePage {
       ],
       isNonInteractive: false
     };
-    MoECapacitorCore.trackEvent({ eventName: "trackInteractiveEvent", eventAttributes: prop });
+    MoECapacitorCore.trackEvent({ eventName: "trackInteractiveEvent", eventAttributes: prop, appId: this.appId });
   }
 
   trackNonIteractiveEvent() {
@@ -229,12 +266,12 @@ export class HomePage {
       ],
       isNonInteractive: true
     };
-    MoECapacitorCore.trackEvent({ eventName: "trackNonIteractiveEvent", eventAttributes: prop });
+    MoECapacitorCore.trackEvent({ eventName: "trackNonInteractiveEvent", eventAttributes: prop, appId: this.appId });
   }
 
   trackEvent() {
     console.log(this.tag + " trackInteractiveEvent() :: ");
-    MoECapacitorCore.trackEvent({ eventName: "trackNonIteractiveEvent" });
+    MoECapacitorCore.trackEvent({ eventName: "onlyevent", appId: this.appId });
   }
 
   registerForPush() {
@@ -242,8 +279,7 @@ export class HomePage {
   }
 
   logOut() {
-    MoECapacitorCore.logoutUser()
-  }
+    MoECapacitorCore.logoutUser({ appId: this.appId });  }
 
   setCurrentContext() {
     let contextElement = prompt('Enter context separated by comma');
@@ -251,7 +287,7 @@ export class HomePage {
       return;
     }
     var contexts = contextElement.split(',');
-    MoECapacitorCore.setInAppContext({ contexts: contexts });
+    MoECapacitorCore.setInAppContext({ contexts: contexts, appId: this.appId });
   }
 
   setUniqueId() {
@@ -259,7 +295,7 @@ export class HomePage {
     if (contextElement === null) {
       return;
     }
-    MoECapacitorCore.setUniqueId({ uniqueId: contextElement });
+    MoECapacitorCore.setUniqueId({ uniqueId: contextElement, appId: this.appId });
   }
 
   setAlias() {
@@ -267,7 +303,7 @@ export class HomePage {
     if (contextElement === null) {
       return;
     }
-    MoECapacitorCore.setAlias({ alias: contextElement });
+    MoECapacitorCore.setAlias({ alias: contextElement, appId: this.appId });
   }
 
   setUserName() {
@@ -275,7 +311,7 @@ export class HomePage {
     if (contextElement === null) {
       return;
     }
-    MoECapacitorCore.setUserName({ userName: contextElement });
+    MoECapacitorCore.setUserName({ userName: contextElement, appId: this.appId });
   }
 
   setFirstName() {
@@ -283,7 +319,7 @@ export class HomePage {
     if (contextElement === null) {
       return;
     }
-    MoECapacitorCore.setFirstName({ firstName: contextElement });
+    MoECapacitorCore.setFirstName({ firstName: contextElement, appId: this.appId });
   }
 
   setLastName() {
@@ -291,7 +327,7 @@ export class HomePage {
     if (contextElement === null) {
       return;
     }
-    MoECapacitorCore.setLastName({ lastName: contextElement });
+    MoECapacitorCore.setLastName({ lastName: contextElement, appId: this.appId });
   }
 
   setEmail() {
@@ -299,7 +335,7 @@ export class HomePage {
     if (contextElement === null) {
       return;
     }
-    MoECapacitorCore.setEmailId({ emailId: contextElement });
+    MoECapacitorCore.setLastName({ lastName: contextElement, appId: this.appId });
   }
 
   setPhoneNumber() {
@@ -307,17 +343,35 @@ export class HomePage {
     if (contextElement === null) {
       return;
     }
-    MoECapacitorCore.setMobileNumber({ mobileNumber: contextElement });
+    MoECapacitorCore.setMobileNumber({ mobileNumber: contextElement, appId: this.appId });
   }
 
   passFCMToken() {
-    MoECapacitorCore.passFcmPushToken({ token: "er5BLF2o52Y:APA91bFQaMLsMLjIo0FkkzroADvBkVlg93N3rCAi9hGVN_oMuVBb-N7edbU4dw2qJ9k0CKbtIgJc9qFDTA7H6ZY27aF-SXr4G7GHtvrbcf18OhWOMtysNnHqK3OtV_sF3jpQO7IcJxJ5" });
-  }
+    MoECapacitorCore.passFcmPushToken({
+      token: "er5BLF2o52Y:APA91bFQaMLsMLjIo0FkkzroADvBkVlg93N3rCAi9hGVN_oMuVBb-N7edbU4dw2qJ9k0CKbtIgJc9qFDTA7H6ZY27aF-SXr4G7GHtvrbcf18OhWOMtysNnHqK3OtV_sF3jpQO7IcJxJ5",
+      appId: this.appId
+    });  }
 
   passFCMPayload() {
     var json = { "gcm_activityName": "com.example.hello.MainActivity", "gcm_notificationType": "normal notification", "gcm_actions": "[{\"action_title\":\"B1\",\"action_id\":\"B1\",\"valueOf\":\"Button 1 clicked\",\"action_tag\":\"m_track\",\"track\":\"action_button_click\"},{\"action_title\":\"B2\",\"action_id\":\"B2\",\"action_tag\":\"m_custom\",\"custom_payload\":\"Custom action on B2 click\"}]", "moe_cid_attr": "{\"moe_campaign_id\":\"000000000000000041115247\"}", "push_from": "moengage", "gcm_alert": "basic", "gcm_title": "basic notification", "FallBackFlagAndroid": "false", "gcm_campaign_id": "000000000000000041115247_L_", "nav_def": "default navigation selected", "moe_channel_id": "moe_default_channel" };
 
-    MoECapacitorCore.passFcmPushPayload({ payload: json });
+    MoECapacitorCore.passFcmPushPayload({ payload: json, appId: this.appId });
     // "{\"platform\":\"android\",\"isDefaultAction\":true,\"payload\":{\"FallBackFlagAndroid\":\"false\",\"gcm_activityName\":\"com.moengage.sampleapp.MainActivity\",\"FROM_BACKGROUND\":false,\"gcm_alert\":\"test\",\"gcm_notificationType\":\"normal notification\",\"push_from\":\"moengage\",\"gcm_campaign_id\":\"000000000000000080602811_L_0\",\"moe_channel_id\":\"moe_sound_channel\",\"gcm_subtext\":\"test\",\"moe_cid_attr\":\"{\\\"moe_campaign_id\\\":\\\"000000000000000080602811\\\"}\",\"MOE_NOTIFICATION_ID\":18005,\"test key\":\"test data\",\"MOE_MSG_RECEIVED_TIME\":1613746382355,\"gcm_title\":\"test\"},\"type\":\"MoEPushClicked\"}")
   }
+  
+  updatePushOptInAttemptCount(){
+    let contextElement = prompt("Enter Push Attempt Count")
+    if(contextElement == null) return
+    let count = parseInt(contextElement)
+    MoECapacitorCore.updatePushPermissionRequestCountAndroid({appId: this.appId, count : count})
+
+  }
+
+  deleteUser(){
+    console.log(this.tag + " deleteUser(): ");
+    MoECapacitorCore.deleteUser({appId: this.appId}, (userDeletionData) => {
+      console.log(this.tag + " deleteUser(): appId="+userDeletionData.accountMeta.appId + " isSuccess=" +userDeletionData.isSuccess)
+    })
+  }
+
 }
